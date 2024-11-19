@@ -3,8 +3,8 @@ import { initialCards } from './scripts/cards.js';
 import { createCard, deleteCard } from './scripts/cards.js';
 import { openModal, closeModal } from './scripts/modal.js';
 
+// переменные для всего проекта
 const placesList = document.querySelector('.places__list');
-
 const editPopup = document.querySelector('.popup_type_edit');  
 const newCardPopup = document.querySelector('.popup_type_new-card');  
 const profileEditButton = document.querySelector('.profile__edit-button');  
@@ -22,6 +22,27 @@ const formElement = document.querySelector('.popup__form');
 initialCards.forEach(function (cardData) {
   placesList.append(createCard(cardData, deleteCard));
 });
+
+// добавляем новые карточки
+const newPlaceElement = document.querySelector('.popup__form[name="new-place"]');
+const placeInput = newPlaceElement.querySelector('input[name="place-name"]');
+const linkInput = newPlaceElement.querySelector('input[name="link"]');
+const popupNewCard = document.querySelector('.popup_type_new-card');
+
+function addCard(evt) {
+    evt.preventDefault();
+    const place = placeInput.value.trim();
+    const link = linkInput.value.trim();
+
+    if (place && link) {
+      const newCard = createCard({ name: place, link: link }, deleteCard)
+      placesList.prepend(newCard);
+      closeModal(popupNewCard);
+      newPlaceElement.reset();
+    }
+}
+
+newPlaceElement.addEventListener('submit', addCard);
 
 // основная логика для модальных окон
   // Открытие попапа редактирования профиля 

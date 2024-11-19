@@ -1,5 +1,3 @@
-import { openModal} from './modal.js';
-
 export const initialCards = [
     {
       name: "Архыз",
@@ -29,7 +27,7 @@ export const initialCards = [
 
 
 //Функция создания карточки
-export function createCard(cardData, deleteCard, handleLikeClick, handleImageClick) {
+export function createCard(cardData, deleteCard, handleLikeClick, handleImageClick, place, link) {
   const cardTemplate = document.querySelector('#card-template').content;
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
 
@@ -58,7 +56,11 @@ export function createCard(cardData, deleteCard, handleLikeClick, handleImageCli
     popupImageElement.src = cardData.link;
     popupImageElement.alt = cardData.name;
     popupCaptionElement.textContent = cardData.name;
-    openModal(popupImage);
+    popupImage.classList.add('popup_is-opened');
+
+    popupImage.querySelector('.popup__close').addEventListener('click', () => {
+      popupImage.classList.remove('popup_is-opened');
+    });
   });
 
   return cardElement;
