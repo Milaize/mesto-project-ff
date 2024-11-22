@@ -46,7 +46,7 @@ function addCard(evt) {
   const link = linkInput.value.trim(); 
   
   if (place && link) { 
-    const newCard = createCard({ name: place, link: link }, deleteCard) 
+    const newCard = createCard({ name: place, link: link }, deleteCard, handleLikeClick, handleImageClick) 
     placesList.prepend(newCard); 
     closeModal(popupNewCard);
     newPlaceElement.reset(); 
