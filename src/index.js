@@ -22,7 +22,7 @@ const popupCaptionElement = popupImage.querySelector('.popup__caption');
 // основная логика для карточек 
 // Вывести карточки на страницу 
 initialCards.forEach(function (cardData) { 
-  placesList.append(createCard(cardData, deleteCard, handleLikeClick)); 
+  placesList.append(createCard(cardData, deleteCard, handleLikeClick, handleImageClick)); 
 }); 
 
 //Обработка клика по изображению
