@@ -1,6 +1,6 @@
 import './pages/index.css';
 import { initialCards } from './scripts/cards.js';
-import { createCard, deleteCard } from './scripts/card.js';
+import { createCard, deleteCard, handleLikeClick } from './scripts/card.js';
 import { openModal, closeModal } from './scripts/modal.js';
 
 //Глобальные переменные
