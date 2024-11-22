@@ -19,7 +19,7 @@ export function createCard(cardData, deleteCard, handleLikeClick, handleImageCli
 
   // Лайк карточки
   likeButton.addEventListener('click', () => { 
-    handleLikeClick (likeButton);
+    handleLikeClick(likeButton);
   }); 
 
   // Открытие изображения при клике
