@@ -28,9 +28,8 @@ function сloseModalByClick(event) {
 }
 
 function closeModalByOverlay(event) {
-  const popup = document.querySelector(".popup_is-opened");
   if (event.target === event.currentTarget) {
-    closeModal(popup);
+    closeModal(event.target);
   }
 }
 

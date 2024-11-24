@@ -70,7 +70,7 @@ profileAddButton.addEventListener('click', () => {
 });  
 
 //обработчик события submit при отправке формы 
-function handleFormSubmit(evt) {   
+function handleProfileFormSubmit(evt) {   
 evt.preventDefault(); // Отменяем стандартное поведение формы   
 // Получаем значения полей формы   
 const nameValue = nameInput.value;  
@@ -80,6 +80,7 @@ profileTitle.textContent = nameValue;
 profileDescription.textContent = jobValue;   
 // Закрываем попап после обновления   
 const popup = profileForm.closest('.popup');  
-popup.classList.remove('popup_is-opened'); }  
+closeModal(popup);
+}
  // Прикрепляем обработчик к форме   
- profileForm.addEventListener('submit', handleFormSubmit);
+ profileForm.addEventListener('submit', handleProfileFormSubmit);
