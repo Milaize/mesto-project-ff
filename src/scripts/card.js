@@ -1,4 +1,4 @@
-export function createCard(cardData, deleteCard, handleLikeClick, handleImageClick) {
+export function createCard(cardData, deleteCard, handleLikeClick, handleImageClick, profileId) {
   const cardTemplate = document.querySelector('#card-template').content;
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
 
@@ -6,11 +6,13 @@ export function createCard(cardData, deleteCard, handleLikeClick, handleImageCli
   const likeButton = cardElement.querySelector('.card__like-button');
   const cardTitle = cardElement.querySelector('.card__title');
   const deleteButton = cardElement.querySelector('.card__delete-button');
+  const cardId = cardData._id;
 
   // Устанавливаем данные карточки
   cardImage.src = cardData.link;
   cardImage.alt = cardData.name;
   cardTitle.textContent = cardData.name;
+ 
 
   // Удаление карточки
   deleteButton.addEventListener('click', () => {
