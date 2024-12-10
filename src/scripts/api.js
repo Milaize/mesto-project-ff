@@ -52,3 +52,40 @@ export const addNewCard = (name, link) => {
     body: JSON.stringify({ name, link })
   }).then((res) => handleResponse(res));
 };
+
+//Удаление карточки
+export const deleteOwnCard = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/${cardId}`, {
+    method: 'DELETE',
+    headers: config.headers,
+  })
+  .then((res) => handleResponse(res))
+}
+
+//Постановка лайка на карточку
+export function likeCard(cardId) {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: 'PUT',
+    headers: config.headers
+  })
+  .then((res) => handleResponse(res))
+}
+
+//Снятие лайка с карточки
+export function unlikeCard(cardId) {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: 'DELETE',
+    headers: config.headers
+  })
+  .then((res) => handleResponse(res))
+}
+
+//Обновление аватара пользователя
+export function updateOwnAvatar (avatar) {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
+    method: "PATCH",
+    headers: config.headers,
+    body: JSON.stringify({ avatar }),
+  })
+  .then((res) => handleResponse(res))
+}
