@@ -3,7 +3,7 @@ import { createCard, deleteCard, handleLikeClick } from './scripts/card.js';
 import { openModal, closeModal } from './scripts/modal.js';
 import { enableValidation, clearValidation } from './scripts/validation.js';
 import { 
-  fetchUserData, fetchCards, loadUserDataAndCards, editUserProfile, addNewCard, deleteOwnCard,
+  fetchUserData, fetchCards, loadUserDataAndCards, editUserProfile, addNewCard, deleteOwnCard, updateOwnAvatar
 } from './scripts/api.js';
 
 // Глобальные переменные
@@ -57,43 +57,37 @@ function handleImageClick(cardData) {
   openModal(popupImage);
 }
 
-// Добавляем новые карточки
-addForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  const cardData = {
-    name: cardInput.value,
-    link: linkInput.value,
-  };
-  const cardElement = createCard(
-    cardData,
-    deleteCard,
-    handleLikeClick,
-    handleImageClick,
-    profileId
-  );
-  placesList.prepend(cardElement);
-  closeModal(newCardPopup);
-});
-
 // Функция загрузки карточек с сервера
 function addLoadingCards(evt) {
   evt.preventDefault();
+
+  const submitButton = addForm.querySelector('.popup__button');
+  submitButton.textContent = 'Сохранение...';
+
   const cardValue = cardInput.value;
   const linkValue = linkInput.value;
+
   addNewCard(cardValue, linkValue)
     .then((cardData) => {
-      const newCard = createCard(
-        cardData,
-        deleteCard,
-        handleLikeClick,
-        handleImageClick,
-        profileId
-      );
-      placesList.prepend(newCard);
-      closeModal(newCardPopup);
+      if (cardData && cardData._id) { // Убедиться, что сервер вернул корректные данные
+        const newCard = createCard(
+          cardData,
+          deleteCard,
+          handleLikeClick,
+          handleImageClick,
+          profileId
+        );
+        placesList.prepend(newCard);
+        closeModal(newCardPopup);
+      } else {
+        console.error('Сервер вернул некорректные данные карточки', cardData);
+      }
     })
     .catch((error) => {
-      console.log(error);
+      console.error(`Ошибка добавления новой карточки: ${error}`);
+    })
+    .finally(() => {
+      submitButton.textContent = 'Сохранить';
     });
 }
 addForm.addEventListener('submit', addLoadingCards);
@@ -117,6 +111,10 @@ profileAddButton.addEventListener('click', () => {
 // Обработчик отправки формы профиля
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
+
+  const submitButton = profileForm.querySelector('.popup__button');
+  submitButton.textContent = 'Сохранение...';
+
   const nameValue = nameInput.value;
   const jobValue = jobInput.value;
 
@@ -127,12 +125,60 @@ function handleProfileFormSubmit(evt) {
       closeModal(editPopup);
     })
     .catch((error) => {
-      console.log(error);
+      console.error(`Ошибка обновления профиля: ${error}`);
+    })
+    .finally(() => {
+      submitButton.textContent = 'Сохранить';
     });
 }
 profileForm.addEventListener('submit', handleProfileFormSubmit);
 
-//смена аватара
+//Смена аватара
+// Функция для обработки клика на аватар и открытия формы редактирования
+function handleProfileImageClick() {
+  const avatarPopup = document.querySelector('.popup_type_avatar');
+  const avatarInput = document.querySelector('#avatarUrl');
+  const avatarForm = document.querySelector('.popup__form[name="edit-avatar"]');
+
+  // Сбрасываем ошибки и поле ввода перед открытием
+  clearValidation(avatarForm, validationConfig);
+  avatarForm.reset();
+  openModal(avatarPopup);
+}
+
+// Обработчик отправки формы изменения аватара
+function handleAvatarFormSubmit(evt) {
+  evt.preventDefault();
+
+  const avatarPopup = document.querySelector('.popup_type_avatar');
+  const avatarInput = document.querySelector('#avatarUrl');
+  const profileImage = document.querySelector('.profile__image');
+  const submitButton = avatarForm.querySelector('.popup__button');
+
+  // Изменяем текст кнопки на "Сохранение..." во время загрузки
+  submitButton.textContent = 'Сохранение...';
+
+  updateOwnAvatar(avatarInput.value)
+    .then((res) => {
+      profileImage.style.backgroundImage = `url(${res.avatar})`;
+      closeModal(avatarPopup);
+    })
+    .catch((error) => {
+      console.error(`Ошибка обновления аватара: ${error}`);
+    })
+    .finally(() => {
+      // Возвращаем исходный текст кнопки после загрузки
+      submitButton.textContent = 'Сохранить';
+    });
+}
+
+// Добавляем обработчик клика на аватар
+const profileImageOverlay = document.querySelector('.profile__image-overlay');
+profileImageOverlay.addEventListener('click', handleProfileImageClick);
+
+// Добавляем обработчик отправки формы изменения аватара
+const avatarForm = document.querySelector('.popup__form[name="edit-avatar"]');
+avatarForm.addEventListener('submit', handleAvatarFormSubmit);
 
 
 // Основная логика для валидации

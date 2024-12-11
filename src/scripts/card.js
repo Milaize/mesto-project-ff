@@ -9,30 +9,39 @@ export function createCard(cardData, deleteCard, handleLikeClick, handleImageCli
   const likeCounter = cardElement.querySelector('.card__like-counter');
   const cardTitle = cardElement.querySelector('.card__title');
   const deleteButton = cardElement.querySelector('.card__delete-button');
-  const cardId = cardData._id;
+  
+  const cardId = cardData._id || null; // Безопасное присвоение
   const likes = Array.isArray(cardData.likes) ? cardData.likes : [];
 
   // Устанавливаем данные карточки
-  cardImage.src = cardData.link;
-  cardImage.alt = cardData.name;
-  cardTitle.textContent = cardData.name;
-  likeCounter.textContent = likes.length; // Отображаем количество лайков из ответа сервера
+  cardImage.src = cardData.link || ''; // Подстраховка от undefined
+  cardImage.alt = cardData.name || 'Изображение';
+  cardTitle.textContent = cardData.name || 'Без названия';
+  likeCounter.textContent = likes.length; 
 
   // Показываем кнопку удаления только если карточка принадлежит текущему пользователю
-  if (cardData.owner._id === profileId) {
+  if (cardData.owner && cardData.owner._id === profileId) {
     deleteButton.style.display = 'block'; 
   } else {
     deleteButton.style.display = 'none';
   }
 
   // Удаление карточки
-  deleteButton.addEventListener('click', () => {
-    deleteCard(cardElement);
-  });
+  if (cardId) {
+    deleteButton.addEventListener('click', () => {
+      deleteCard(cardElement, cardId);
+    });
+  } else {
+    deleteButton.style.display = 'none'; // Скрыть кнопку удаления, если нет ID
+  }
 
   // Лайк карточки
   likeButton.addEventListener('click', () => { 
-    handleLikeClick(likeButton, cardId, likeCounter);
+    if (cardId) {
+      handleLikeClick(likeButton, cardId, likeCounter);
+    } else {
+      console.error('Нет ID для управления лайками');
+    }
   });
 
   // Открытие изображения при клике
