@@ -24,5 +24,3 @@
 Пользователь может выбрать любую фотографию в качестве аватара, вставив ссылку в input.  
 
 [follow the link](https://milaize.github.io/mesto-project-ff/) 
-
-https://github.com/Milaize/mesto-project-ff.git
