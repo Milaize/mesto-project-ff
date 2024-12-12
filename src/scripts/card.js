@@ -19,6 +19,11 @@ export function createCard(cardData, deleteCard, handleLikeClick, handleImageCli
   cardTitle.textContent = cardData.name || 'Без названия';
   likeCounter.textContent = likes.length; 
 
+  // Проверяем, лайкнул ли текущий пользователь карточку
+  if (likes.some(user => user._id === profileId)) {
+    likeButton.classList.add('card__like-button_is-active');
+  }
+
   // Показываем кнопку удаления только если карточка принадлежит текущему пользователю
   if (cardData.owner && cardData.owner._id === profileId) {
     deleteButton.style.display = 'block'; 
