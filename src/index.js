@@ -27,6 +27,11 @@ const cardTemplateContent = document.querySelector('#card-template').content;
 const newCardForm = document.querySelector('.popup_type_new-card .popup__form');
 const cardInput = addForm.querySelector(".popup__input_type_card-name");
 const linkInput = addForm.querySelector(".popup__input_type_url");
+const avatarPopup = document.querySelector('.popup_type_avatar');
+const avatarInput = document.querySelector('#avatarUrl');
+const avatarForm = document.querySelector('.popup__form[name="edit-avatar"]');
+const submitButton = avatarForm.querySelector('.popup__button');
+const profileImageOverlay = document.querySelector('.profile__image-overlay');
 let profileId;
 
 // Основная логика для карточек
@@ -61,7 +66,7 @@ function handleImageClick(cardData) {
 function addLoadingCards(evt) {
   evt.preventDefault();
 
-  const submitButton = addForm.querySelector('.popup__button');
+  const submitButton = evt.submitter;
   submitButton.textContent = 'Сохранение...';
 
   const cardValue = cardInput.value;
@@ -136,9 +141,6 @@ profileForm.addEventListener('submit', handleProfileFormSubmit);
 //Смена аватара
 // Функция для обработки клика на аватар и открытия формы редактирования
 function handleProfileImageClick() {
-  const avatarPopup = document.querySelector('.popup_type_avatar');
-  const avatarInput = document.querySelector('#avatarUrl');
-  const avatarForm = document.querySelector('.popup__form[name="edit-avatar"]');
 
   // Сбрасываем ошибки и поле ввода перед открытием
   clearValidation(avatarForm, validationConfig);
@@ -149,11 +151,6 @@ function handleProfileImageClick() {
 // Обработчик отправки формы изменения аватара
 function handleAvatarFormSubmit(evt) {
   evt.preventDefault();
-
-  const avatarPopup = document.querySelector('.popup_type_avatar');
-  const avatarInput = document.querySelector('#avatarUrl');
-  const profileImage = document.querySelector('.profile__image');
-  const submitButton = avatarForm.querySelector('.popup__button');
 
   // Изменяем текст кнопки на "Сохранение..." во время загрузки
   submitButton.textContent = 'Сохранение...';
@@ -173,11 +170,9 @@ function handleAvatarFormSubmit(evt) {
 }
 
 // Добавляем обработчик клика на аватар
-const profileImageOverlay = document.querySelector('.profile__image-overlay');
 profileImageOverlay.addEventListener('click', handleProfileImageClick);
 
 // Добавляем обработчик отправки формы изменения аватара
-const avatarForm = document.querySelector('.popup__form[name="edit-avatar"]');
 avatarForm.addEventListener('submit', handleAvatarFormSubmit);
 
 

@@ -21,8 +21,8 @@ function closeModalByEscape(event) {
 }
 
 function closeModalByClick(event) {
-  const popup = document.querySelector(".popup_is-opened");
   if (event.target.classList.contains("popup__close")) {
+    const popup = document.querySelector(".popup_is-opened");
     closeModal(popup);
   }
 }
